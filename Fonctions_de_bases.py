@@ -25,12 +25,12 @@ def Omega_Manhattan(i1,j1,i2,j2):
         return 0
     return 1/(abs(i1-i2)+abs(j1+j2))
 
-def R(I,i,j,r,alpha,Omega):
+def R(I,i,j,r,Omega,alpha=None):
     lignes=np.size(I,0)
     S_Omega,S=0,0
     colonnes=np.size(I,1)
     for x in range(lignes):
         for y in range(colonnes):
             S_Omega+=Omega(i,j,x,y)
-            S+=Omega(i,j,x,y)*r(I[i][j]-I[x][y], alpha)
+            S+=Omega(i,j,x,y)*r(I[i,j,0]-I[x,y,0], alpha)
     return S/S_Omega
