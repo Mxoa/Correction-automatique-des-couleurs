@@ -4,11 +4,11 @@ import loader as ld
 def scaling(image, channel=0):
     """
     
-    | channel : int, the channel to rescale, default 0 = all channels, 1 = red, 2 = green, 3 = blue
+    | channel : int, the channel to rescale, 0 = red, 1 = green, 2 = blue
     | image : numpy array, the image to rescale
     Rescale the image channel 'channel' to the range [0, 255] 
     Associate the minimum value of the channel to 0 and the maximum value to 255.
-    Return a copy of the image.
+    Modify the image in place.
     
     """
     
