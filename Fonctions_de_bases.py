@@ -6,7 +6,7 @@ def signum(t, alpha=None):
 # fonction signe    
     if t>=0:
         return 1
-    return 0
+    return -1
 
 def saturation(t, alpha):
 # fonction saturation    
@@ -32,5 +32,18 @@ def R(I,i,j,r,Omega,alpha=None):
     for x in range(lignes):
         for y in range(colonnes):
             S_Omega+=Omega(i,j,x,y)
-            S+=Omega(i,j,x,y)*r(I[i,j,0]-I[x,y,0], alpha)
+            
+            
+            #print("I > ", I[i,j,0],I[x,y,0])
+            
+            try:
+                S+=Omega(i,j,x,y)*r(I[i,j,0]-I[x,y,0], alpha)
+            except:
+                print("Error")
+                print("I > ", I[i,j,0],I[x,y,0])
+                print("x,y > ", x,y)
+                print("i,j > ", i,j)
+                print("r > ", r(I[i,j,0]-I[x,y,0], alpha))
+                raise Exception("Error")
+            
     return S/S_Omega
