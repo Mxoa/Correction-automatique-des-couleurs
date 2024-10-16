@@ -2,6 +2,7 @@ from matplotlib import pyplot as plt
 import loader as ld
 import numpy as np
 
+
 def show_histogram(image, channel=0):
     """
     
@@ -49,6 +50,8 @@ def show_histogram_rgb(image):
     axs[2].set_title('Blue Channel Histogram')
 
     plt.tight_layout()
+    plt.ion()
+    
     plt.show()
     
 if __name__ == "__main__":
