@@ -2,6 +2,7 @@ import numpy as np
 import math
 import time
 import warnings
+import tqdm
 
 # Convertir les avertissements en erreurs
 warnings.filterwarnings("error", category=RuntimeWarning)
@@ -31,7 +32,7 @@ def Omega_Manhattan(i1,j1,i2,j2):
         return 0
     return 1/(abs(i1-i2)+abs(j1+j2))
 
-def R_pixel(I,i,j,r,Omega):
+def R_pixel(I,i,j,r,Omega, channel = 0):
     lignes=np.size(I,0)
     S=0
     colonnes=np.size(I,1)
@@ -39,13 +40,12 @@ def R_pixel(I,i,j,r,Omega):
         for y in range(colonnes):
             
             try:
-                S += Omega(i, j, x, y) * r(int(I[x,y,0]) - int(I[i,j,0]))
+                S += Omega(i, j, x, y) * r(int(I[i,j,channel]) - int(I[x,y,channel]))
             except:
                 print("Error")
-                print("I > ", I[i,j,0],I[x,y,0])
+                print("I > ", I[i,j,channel],I[x,y,channel])
                 print("x,y > ", x,y)
                 print("i,j > ", i,j)
-                print("r > ", r(I[i,j,0]-I[x,y,0]))
                 raise Exception("Error {}".format(I[i,j,0]-I[x,y,0]))
             
     return S
@@ -55,23 +55,15 @@ def R(I, f=signum, d=Omega_Ed):
     
     R = I.copy().astype(np.float64)
     
-
-    for k in range(2): #np.size(I,0)):
-        for l in range(2): #np.size(I,1)):
-            R[k, l, 0] = R_pixel(I,k,l,f,d)
+    for channel in range(3):
+        print("Computing channel ", channel)
+        for i in tqdm.tqdm(range(np.size(I,0))):
+            for j in range(np.size(I,1)):
+                R[i, j, channel] = R_pixel(I,i,j,f,d, channel)
     
     
     R=np.array(R)
-    R=R/(max(R.max(), -R.min())) # R in [-1,1]
-    
+    R=R/(abs(max(R.max(), -R.min()))) # R in [-1,1]
+    print("RMAX MIN", R.max(), R.min())
     return R
     
-
-def R_max(I,r,Omega,alpha=None):
-    lignes=np.size(I,0)
-    colonnes=np.size(I,1)
-    S=0
-    for i in range(lignes):
-        for j in range(colonnes):
-            S=max(S,R(I,i,j,r,Omega,alpha))
-    return S

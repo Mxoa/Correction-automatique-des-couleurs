@@ -1,6 +1,9 @@
 from matplotlib import pyplot as plt
+import matplotlib
 import loader as ld
 import numpy as np
+
+#matplotlib.use('tkagg')
 
 
 def show_histogram(image, channel=0):

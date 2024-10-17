@@ -1,5 +1,6 @@
 import numpy as np
 import loader as ld
+import tqdm
 
 def scaling(image, channel=0):
     """
@@ -17,7 +18,7 @@ def scaling(image, channel=0):
     max_intensity = image[:, :, channel].max()
     min_intensity = image[:, :, channel].min()
     
-    for i in range(image.shape[0]):
+    for i in tqdm.tqdm(range(image.shape[0])):
         for j in range(image.shape[1]):
             intensity = np.round(255 * (image[i, j, channel] - min_intensity) / (max_intensity - min_intensity))
             image[i, j, channel] = intensity

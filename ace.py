@@ -18,11 +18,10 @@ def ACE(image, f=Fonctions_de_bases.signum, d=Fonctions_de_bases.Omega_Ed):
     
     time1 = time.time()
     print("Loading image...")
-    I=image
+    I=image.copy()
     print(f"Image loaded {time.time()-time1}s")
     print("Creating R...")
     time1 = time.time()
-    
 
     r_image = Fonctions_de_bases.R(I)
     
@@ -32,14 +31,15 @@ def ACE(image, f=Fonctions_de_bases.signum, d=Fonctions_de_bases.Omega_Ed):
     
     time1 = time.time()
     print("Scaling...")
-    L=scaling.scaling(r_image)
-    print(I.shape)
+    I=scaling.scaling(r_image)
+    I=scaling.scaling(r_image, 1)
+    I=scaling.scaling(r_image, 2)
     print("Scaled in ",time.time()-time1,"s")
     return I
 
 if __name__=="__main__":
-    image = loader.load_image("images/test3.png")
+    image = loader.load_image("images/test2.jpg")
     show_histogram_rgb(image)
     image = ACE(image)
     show_histogram_rgb(image)
-    loader.save_image(image, "test3_new.png")
+    loader.save_image(image, "test2_new")
