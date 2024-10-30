@@ -15,7 +15,7 @@ def signum(t, alpha=None):
         return 1
     return -1
 
-def saturation(t, alpha):
+def saturation(t, alpha=2):
 # fonction saturation    
     return min(max(alpha*t , -1) , 1)
 
@@ -40,7 +40,8 @@ def R_pixel(I,i,j,r,Omega, channel = 0):
         for y in range(colonnes):
             
             try:
-                S += Omega(i, j, x, y) * r(int(I[i,j,channel]) - int(I[x,y,channel]))
+                print(r(I[i,j,channel] - I[x,y,channel]))
+                S += Omega(i, j, x, y) * r(I[i,j,channel] - I[x,y,channel])
             except:
                 print("Error")
                 print("I > ", I[i,j,channel],I[x,y,channel])

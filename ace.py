@@ -38,7 +38,7 @@ def ACE(image, f=Fonctions_de_bases.signum, d=Fonctions_de_bases.Omega_Ed):
     return I
 
 if __name__=="__main__":
-    image = loader.load_image("images/test2.jpg")
+    image = loader.load_image(r"C:\Users\jabal\Correction-automatique-des-couleurs\image-test.png")
     show_histogram_rgb(image)
     image = ACE(image)
     show_histogram_rgb(image)
