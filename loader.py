@@ -12,7 +12,7 @@ def load_image(image_path):
         raise Exception("Error while loading the image")
 
 def save_image(image, name="image"):
-    cv2.imwrite(f"C:/Users/jabal/Correction-automatique-des-couleurs/{name}.png", image)
+    cv2.imwrite(f"{name}.png", image)
 
 if __name__ == "__main__":
     image = load_image("images/test1.jpg")
