@@ -31,7 +31,7 @@ def Omega_Manhattan(i1,j1,i2,j2):
 # Norme 1
     if i1==i2 and j1==j2:
         return 0
-    return 1/(abs(i1-i2)+abs(j1+j2))
+    return 1/(abs(i1-i2)+abs(j1-j2))
 
 def R_pixel(I,i,j,r,Omega, channel = 0):
     lignes=np.size(I,0)
@@ -56,13 +56,13 @@ def R_pixel(I,i,j,r,Omega, channel = 0):
             
     return S/(S_normalize*(r(10)))
 
-def R_pixel_random(I,i,j,r,omega, random_set, channel = 0):
+def R_pixel_random(I,i,j,r,omega, random_set, channel = 0, rmax=1):
     S=0
     S_normalize=0
     for (x , y) in random_set:
         S += omega(i, j, x, y) * r(float(I[i,j,channel]) - float(I[x,y,channel]))
         S_normalize += omega(i, j, x, y)
-    return S/(S_normalize*(r(10)))
+    return S/(S_normalize*(rmax))
 
 def R_random(I, f=signum, d=Omega_Ed, n=1000):
     R=[]
@@ -107,3 +107,11 @@ def R(I, f=signum, d=Omega_Ed):
     # R=R/(abs(max(R.max(), -R.min()))) # R in [-1,1]
     # print("RMAX MIN", R.max(), R.min())
     return R
+
+
+def gray_world(image):
+    red_channel = image[:, :, 0]
+    blue_channel = image[:, :, 1]
+    green_channel = image[:, :, 2]
+    
+    means = []

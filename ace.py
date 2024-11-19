@@ -8,7 +8,7 @@ from vizualization import *
 import sys
 
 
-def ACE(image, f=Fonctions_de_bases.signum, d=Fonctions_de_bases.Omega_Ed, scaling_function=scaling.scaling_gw_wp, random=False, n_pts=50):
+def ACE(image, f=Fonctions_de_bases.signum, d=Fonctions_de_bases.Omega_Ed, scaling_function=scaling.scaling_gw_wp, random=False, n_pts=50, lab=True):
     
     """
         Implémente l'algorithme ACE
@@ -24,6 +24,7 @@ def ACE(image, f=Fonctions_de_bases.signum, d=Fonctions_de_bases.Omega_Ed, scali
     print("| random : ", random)
     print("| If random, n_pts : ", n_pts)
     print("| Image shape : ", image.shape)
+    print("| Lab : ", lab)
     print("--------------------")
     
     time1 = time.time()
@@ -37,34 +38,33 @@ def ACE(image, f=Fonctions_de_bases.signum, d=Fonctions_de_bases.Omega_Ed, scali
     
     print("R created in ",time.time()-time1,"s")
     time1 = time.time()
-    
-    
-    time1 = time.time()
-    print("Scaling...")
-    scaling_function(r_image)
-    scaling_function(r_image, 1)
-    scaling_function(r_image, 2)
+
+    if lab:
+        scaling_function(r_image, 0, 0, 255)
+        scaling_function(r_image, 1, 0, 255)
+        scaling_function(r_image, 2, 0, 255)
+    else:
+        scaling_function(r_image, 0)
+        scaling_function(r_image, 1)
+        scaling_function(r_image, 2)
     print("Scaled in ",time.time()-time1,"s")
-    return r_image
+    return r_image.astype(np.uint8)
 
 if __name__=="__main__":
-    
-    if len(sys.argv) < 4:
-        print("Usage: python ace.py <nom_photo> <nom_fichier_sauvegarde> <alpha> <scaling_function_wpgw=False or True, True by default> <random=True or False> <n>")
-        sys.exit(1)
-
-    print(sys.argv)
-    nom_fichier = sys.argv[1]
-    nom_fichier_sauvegarde = sys.argv[2]
-    alpha = float(sys.argv[3])
-    scaling_f_n = sys.argv[4] == 'True' if len(sys.argv) >= 5 else True
-    randomly = sys.argv[5] == 'True' if len(sys.argv) >= 6 else False
-    n_pts = int(sys.argv[6]) if len(sys.argv) >= 7 else 50
-    
-    print("scaling_f_n", scaling_f_n)
-    
-    image = loader.load_image(nom_fichier)
-    #show_histogram_rgb(image)
-    image = ACE(image, lambda t : Fonctions_de_bases.saturation(t, alpha), Fonctions_de_bases.Omega_Ed, scaling.scaling_gw_wp if scaling_f_n else scaling.scaling, random=randomly, n_pts=n_pts)
-    #show_histogram_rgb(image)
-    loader.save_image(image, nom_fichier_sauvegarde)
+    # Opens a file where the lines are the arguments of the program which are the name of the file to process, the name of the file to save, the alpha value, the scaling function, if the random set is used and the number of points in the random set
+    with open("arguments.txt", "r") as f:
+        for line in f:
+            args = line.split()
+            print(args)
+            nom_fichier = args[0]
+            nom_fichier_sauvegarde = args[1]
+            alpha = float(args[2])
+            scaling_f_n = args[3] == 'True'
+            randomly = args[4] == 'True'
+            n_pts = int(args[5])
+            print("scaling_f_n", scaling_f_n)
+            image = loader.load_image(nom_fichier)
+            save_histogram_rgb(image, nom_fichier)
+            image = ACE(image, lambda t : Fonctions_de_bases.saturation(t, alpha), Fonctions_de_bases.Omega_Ed, scaling.scaling_gw_wp if scaling_f_n else scaling.scaling, random=randomly, n_pts=n_pts)
+            save_histogram_rgb(image, nom_fichier_sauvegarde)
+            loader.save_image(image, nom_fichier_sauvegarde)

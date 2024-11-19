@@ -3,7 +3,7 @@ import matplotlib
 import loader as ld
 import numpy as np
 
-#matplotlib.use('tkagg')
+matplotlib.use('tkagg')
 
 
 def show_histogram(image, channel=0):
@@ -57,6 +57,31 @@ def show_histogram_rgb(image):
     
     plt.show()
     
+def save_histogram_rgb(image, name):
+    fig, axs = plt.subplots(1, 3, figsize=(12, 4))
+
+    # Red channel histogram
+    axs[0].hist(image[:, :, 0].flatten(), bins=256, range=(0, 256), density=True, color='r', alpha=0.75)
+    axs[0].set_xlabel('Intensity value')
+    axs[0].set_ylabel('Frequency')
+    axs[0].set_title('Red Channel Histogram')
+
+    # Green channel histogram
+    axs[1].hist(image[:, :, 1].flatten(), bins=256, range=(0, 256), density=True, color='g', alpha=0.75)
+    axs[1].set_xlabel('Intensity value')
+    axs[1].set_ylabel('Frequency')
+    axs[1].set_title('Green Channel Histogram')
+
+    # Blue channel histogram
+    axs[2].hist(image[:, :, 2].flatten(), bins=256, range=(0, 256), density=True, color='b', alpha=0.75)
+    axs[2].set_xlabel('Intensity value')
+    axs[2].set_ylabel('Frequency')
+    axs[2].set_title('Blue Channel Histogram')
+
+    plt.tight_layout()
+    plt.savefig(f'histograms/{name}')
+    plt.close()
+        
 if __name__ == "__main__":
     img = ld.load_image("images/test1.jpg")
     show_histogram_rgb(img)
