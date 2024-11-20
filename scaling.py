@@ -25,7 +25,7 @@ def scaling(image, channel=0, mx=255, mn=0):
     
     for i in tqdm.tqdm(range(image.shape[0])):
         for j in range(image.shape[1]):
-            intensity = np.round((image[i, j, channel] - min_intensity) / (max_intensity - min_intensity) * (mx - mn) + mn)
+            intensity = np.round((float(image[i, j, channel]) - min_intensity) / (max_intensity - min_intensity) * (mx - mn) + mn)
             image[i, j, channel] = intensity
             
 
@@ -52,20 +52,28 @@ def scaling_gw_wp(image_r, channel=0, mx=255, mn=0):
     max_channel = image_r[:, :, channel].max()
     mean_channel = image_r[:, :, channel].mean()
     
+    if max_channel <= 10e-6:
+        print(" | Channel is empty, filling with 128")
+        # Si jamais le channel est vide, en lab
+        for i in tqdm.tqdm(range(image_r.shape[0])):
+            for j in range(image_r.shape[1]):
+                intensity = 128
+                image_r[i, j, channel] = intensity
+        return
+    
     for i in tqdm.tqdm(range(image_r.shape[0])):
         for j in range(image_r.shape[1]):
-            intensity = np.round(127.5 + 255 * ((image_r[i, j, channel] - mean_channel) / max_channel))
+            intensity = np.round(128 + 127 * (image_r[i, j, channel] / max_channel))
             image_r[i, j, channel] = intensity
     
-    np.clip(image_r, 0, 255, out=image_r)
 
 
 if __name__ == "__main__":
     img = ld.load_image("image-test.png")
     vz.save_histogram_rgb(img, "image-test.png")
-    scaling_gw_wp(img)
+    scaling(img)
     vz.save_histogram_rgb(img, "image-test-new.png")
     
-    scaling_gw_wp(img, 1)
-    scaling_gw_wp(img, 2)
+    scaling(img, 1)
+    scaling(img, 2)
     ld.save_image(img, "image-test-scaled.png")

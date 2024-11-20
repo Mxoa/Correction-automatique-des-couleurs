@@ -79,9 +79,16 @@ def save_histogram_rgb(image, name):
     axs[2].set_title('Blue Channel Histogram')
 
     plt.tight_layout()
-    plt.savefig(f'histograms/{name}')
+    plt.savefig(f'histograms/{name.split("/")[-1].split(".")[0]}_histogram.png')
     plt.close()
         
+        
+def save_channel_rgb(image, channel, name):
+    fig, ax = plt.subplots()
+    ax.imshow(image[:, :, channel], cmap='gray')
+    plt.savefig(f'channels/{name.split("/")[-1].split(".")[0]}_channel_{channel}.png')
+    plt.close()
+
 if __name__ == "__main__":
     img = ld.load_image("images/test1.jpg")
     show_histogram_rgb(img)

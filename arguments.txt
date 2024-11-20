@@ -1,1 +1,1 @@
-image-test.png image-test-new.png 2 False True 500
+images/cuisine_eclairage_jaune.png cuisine-test.png 2 True True 200 False Ed

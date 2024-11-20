@@ -22,7 +22,7 @@ def save_image(image, name="image", lab=True):
     print(f"Image saved as {name}")
 
 if __name__ == "__main__":
-    image = load_image("images/article_pont_color.png")
+    image = load_image("images/article_pont.png")
     print("Shape", image.shape)
     print("Type", type(image))
     print("Max L", image[:, :, 0].max())
