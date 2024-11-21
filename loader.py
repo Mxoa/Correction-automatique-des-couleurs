@@ -16,7 +16,11 @@ def load_image(image_path, lab=False):
         raise Exception("Error while loading the image")
 
 def save_image(image, name="image", lab=False):
+    image.astype(np.uint8)
     if lab:
+        image[:, :, 0] = np.clip(image[:, :, 0], 0, 255)
+        image[:, :, 1] = np.clip(image[:, :, 1], 0, 255)
+        image[:, :, 2] = np.clip(image[:, :, 2], 0, 255)
         image = cv2.cvtColor(image, cv2.COLOR_LAB2BGR)
     cv2.imwrite(f"{name}", image)
     print(f"Image saved as {name}")

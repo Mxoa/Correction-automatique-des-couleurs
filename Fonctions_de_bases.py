@@ -16,9 +16,11 @@ def signum(t):
         return 1
     return -1
 
-def saturation(t, alpha=2):
-# fonction saturation    
-    return min(max(alpha*t , -1) , 1)
+def saturation(x, alpha=2):
+    """
+    Fonction de saturation (fonction de transformation).
+    """
+    return np.clip(alpha*x, -1, 1)
 
 def Omega_Ed(i1,j1,i2,j2):
 # distance euclidienne

@@ -6,6 +6,8 @@ import loader as ld
 from Fonctions_de_bases import *
 import scaling as sc
 from tqdm import tqdm
+from scipy.fftpack import dct, idct
+
 
 x=np.linspace(-256,256,10000)
 
@@ -52,12 +54,12 @@ def R_convolution(L,img,fonction,omega,alpha=2):
     height,width=np.size(img,0),np.size(img,1)
     F=np.zeros((height,width))
     
-    kernel = get_kernel(width, height, omega)
+    kernel = get_kernel(10, 10, omega)
     
     for i in range(height):
         for j in range(width):
             F[i,j]=fonction(L-img[i,j],alpha)
-    return scipy.signal.convolve2d(F,kernel,mode='same', boundary='wrap')
+    return scipy.signal.convolve2d(F,kernel,mode='same', boundary='fill')
     
 def R_interpolation(img_uint,fonction,omega,number_of_levels=8,alpha=2):
     #C'est le calcul du developpement limité qui se trouve juste après dans le meme article

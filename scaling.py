@@ -3,7 +3,7 @@ import loader as ld
 import vizualization as vz
 import tqdm
 
-def scaling(image, channel=0, mx=255, mn=0):
+def scaling(image, channel=0, mx=250, mn=10):
     """
     
     | channel : int, the channel to rescale, 0 = red, 1 = green, 2 = blue
@@ -27,7 +27,6 @@ def scaling(image, channel=0, mx=255, mn=0):
         for j in range(image.shape[1]):
             intensity = np.round((float(image[i, j, channel]) - min_intensity) / (max_intensity - min_intensity) * (mx - mn) + mn)
             image[i, j, channel] = intensity
-            
 
     
     

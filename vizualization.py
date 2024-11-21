@@ -88,6 +88,7 @@ def save_channel_rgb(image, channel, name):
     ax.imshow(image[:, :, channel], cmap='gray')
     plt.savefig(f'channels/{name.split("/")[-1].split(".")[0]}_channel_{channel}.png')
     plt.close()
+    
 
 if __name__ == "__main__":
     img = ld.load_image("images/test1.jpg")

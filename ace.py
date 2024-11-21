@@ -6,7 +6,7 @@ import cv2
 import numpy as np
 from vizualization import *
 import sys
-
+import interpolation
 
 def ACE(image, f=Fonctions_de_bases.signum, d=Fonctions_de_bases.Omega_Ed, scaling_function=scaling.scaling_gw_wp, random=False, n_pts=50, lab=False):
     
@@ -29,7 +29,7 @@ def ACE(image, f=Fonctions_de_bases.signum, d=Fonctions_de_bases.Omega_Ed, scali
     
     time1 = time.time()
     print("Loading image...")
-    I=image.copy()
+    I=image.copy().astype(np.float64)/255.0
     print(f"Image loaded {time.time()-time1}s")
     print("Creating R...", "randomly" if random else "not randomly")
     
@@ -63,18 +63,48 @@ if __name__=="__main__":
     # Opens a file where the lines are the arguments of the program which are the name of the file to process, the name of the file to save, the alpha value, the scaling function, if the random set is used and the number of points in the random set
     with open("arguments.txt", "r") as f:
         for line in f:
+            
+            if line[0] == "#":
+                continue
+            
             args = line.split()
+            
             print(args)
-            nom_fichier = args[0]
-            nom_fichier_sauvegarde = args[1]
-            alpha = float(args[2])
-            scaling_f_n = args[3] == 'True'
-            randomly = args[4] == 'True'
-            n_pts = int(args[5])
-            lab = args[6] == 'True'
-            normalization = Fonctions_de_bases.Omega_Ed_2 if args[7] == 'Ed2' else Fonctions_de_bases.Omega_Manhattan if args[7] == 'Manhattan' else Fonctions_de_bases.Omega_Ed
+            
+            methode = args[0]
+            
+            
+            nom_fichier = args[1]
+            nom_fichier_sauvegarde = args[2]
+            alpha = float(args[3])
+            scaling_f_n = args[4] == 'True'
+            
+            
+            
+            lab = args[5] == 'True'
+            normalization = Fonctions_de_bases.Omega_Ed_2 if args[6] == 'Ed2' else Fonctions_de_bases.Omega_Manhattan if args[6] == 'Manhattan' else Fonctions_de_bases.Omega_Ed
+            
+            # Chargement de l'image
             image = loader.load_image(nom_fichier, lab=lab)
             save_histogram_rgb(image, nom_fichier)
-            image = ACE(image, lambda t : Fonctions_de_bases.saturation(t, alpha), Fonctions_de_bases.Omega_Ed, scaling.scaling_gw_wp if scaling_f_n else scaling.scaling, random=randomly, n_pts=n_pts, lab=lab)
+            
+            if methode == "ace":
+                print("#ACE")
+                randomly = args[7] == 'True'
+                n_pts = int(args[8])
+                image = ACE(image, lambda t : Fonctions_de_bases.saturation(t, alpha), Fonctions_de_bases.Omega_Ed, scaling.scaling_gw_wp if scaling_f_n else scaling.scaling, random=randomly, n_pts=n_pts, lab=lab)
+
+            elif methode == "he":
+                print("#HE")
+                #image = scaling.he(image, lab=lab)
+            elif methode == "interpolation":
+                print("#Interpolation")
+                num_levels = int(args[7])
+                #np.clip(image, -10, 255, out=image)
+                image = interpolation.ace_interpolation(image, normalization, lambda t : Fonctions_de_bases.saturation(t, alpha), num_levels=num_levels, lab=lab, scaling_function=scaling.scaling_gw_wp if scaling_f_n else scaling.scaling)
+            else:
+                print("Unknown method")
+                sys.exit(1)
+            
             save_histogram_rgb(image, nom_fichier_sauvegarde)
             loader.save_image(image, nom_fichier_sauvegarde, lab=lab)
