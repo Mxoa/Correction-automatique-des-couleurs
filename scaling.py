@@ -51,14 +51,14 @@ def scaling_gw_wp(image_r, channel=0, mx=255, mn=0):
     max_channel = image_r[:, :, channel].max()
     mean_channel = image_r[:, :, channel].mean()
     
-    if max_channel <= 10e-6:
-        print(" | Channel is empty, filling with 128")
-        # Si jamais le channel est vide, en lab
-        for i in tqdm.tqdm(range(image_r.shape[0])):
-            for j in range(image_r.shape[1]):
-                intensity = 128
-                image_r[i, j, channel] = intensity
-        return
+    # if max_channel <= 10e-6:
+    #     print(" | Channel is empty, filling with 128")
+    #     # Si jamais le channel est vide, en lab
+    #     for i in tqdm.tqdm(range(image_r.shape[0])):
+    #         for j in range(image_r.shape[1]):
+    #             intensity = 128
+    #             image_r[i, j, channel] = intensity
+    #     return
     
     for i in tqdm.tqdm(range(image_r.shape[0])):
         for j in range(image_r.shape[1]):

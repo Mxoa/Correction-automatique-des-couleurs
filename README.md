@@ -1,41 +1,29 @@
-# Correction-automatique-des-couleurs
-Mise en place d'un algorithme de Correction automatique des couleurs.
 
-# Définitions article 1
+# Description des Commandes
 
-- **Color consistency** : Capacité de notre cerveau à reconnaître les couleurs malgré la fluctuation de la lumière
-- **White Patch Mechanism** : Pour atteindre la consistence des couleurs, *dans certains cas*, le cerveau humain peut vouloir normaliser les couleurs pour que la zone la plus claire de l'image devienne blanche.
-- **Gray World Mechanism** : Parfois les images peuvent être légèrement orientées vers une couleur particulière. Ce mécanisme va rendre chaque couleur aussi puissante que ses sœurs.
-- **Dynamic Range** : Dynamique de l'image, c'est à dire la capacité de représentation de différentes luminosités. La Dynamique oculaire est très performante comparée à la dynamique mécanique.
-- **Lateral inhibition** : Capacité humaine à contraster. Les neurones inhibent leurs voisines.
-- **$R_c$ scaling et WP/GW scaling** : Le scaling permet de profiter de l'intégralité de la dynamique de l'image, il y a le scaling normal $min R_c \rightarrow 0$  et $max R_c \rightarrow 255$ et le scaling WP/GW, plus efficace $max R_c \rightarrow 255$ et $0 \rightarrow 127.5$.
+Ces commandes permettent d'appliquer deux méthodes de traitement d'image : **`interpolation`** et **`ace`**. Chaque méthode utilise des arguments spécifiques pour ajuster ses paramètres.
 
+---
 
-# Définitions article 2
+## Format Général
 
-- **Histogram Equalization** : Méthode d'uniformisation de l'histogramme.
-- **Circular convolution** : Le fait d'avoir périodisé l'image permet de définir une nouvelle distance, périodique, qui va permettre de faire apparaître une convolution dans la formule de $R(x)$.
-- **Polynomial Approximation** : Technique selon laquelle nous approchons $s_\alpha$ par un polynôme pour faire apparaître une convolution
-- **Interpolation** : Approche pour faire apparaître une formule de convolution dans $R(x)$, qui consiste à séparer le domaine de $x \rightarrow I(x)$ en $J$ étages $L_1, L_2, ...$, ainsi, pour l'étage $j$, $I$ est constant et donc apparaît naturellement une convolution dans la formule de $R_c$.
+1. **Fichier_source** : Chemin vers l'image d'entrée.
+2. **Fichier_cible** : Chemin où enregistrer l'image traitée.
+3. **Alpha** : Paramètre de pondération.
+4. **Scaling_fonction** : Booléen (`True` ou `False`) pour appliquer une mise à l'échelle des résultats selon gw_wp.
+5. **Lab** : Booléen (`True` ou `False`) pour indiquer si l'image est traitée dans l'espace Lab (au lieu de RGB).
+6. **Omega** : Fonction de distance utilisée :
+   - `Ed` : Distance Euclidienne.
+   - `Ed2` : Distance Euclidienne quadratique.
+   - `Manhattan` : Distance de Manhattan.
 
-# Implémentation
+---
 
-- Coder une fonction qui calcule la moyenne des couleurs pour vérifier l'hypothèse Gray World.
-- Coder une fonction qui permet de détecter le code RGB de la zone la plus lumineuse
-- Coder une fonction $R_c(p, r, d)$ suivant : avec $\alpha_p$ une constante de normalisation $$ R_c(p) = \alpha_p \sum_{j \in S} \omega(p-j) \cdot r(I_c(p) - I_c(j))$$
-- Implémenter $O_c(p)$
-- Tester les deux méthodes d'amélioration de l'algorithme (Approximation polynomiale et Interpolation)
-- Chercher les bibliothèques python pour manipuler les polynômes
-# Remarques
+## Méthode : `interpolation`
 
-- La fonction $r$ testée la plus efficace pour le white patch est la fonction signe.
-- Si une couleur est naturellement dominante sur l'image, alors nous aurons des problèmes avec la méthode ACE qui va avoir tendance à se rapprocher du Gray World.
+Cette méthode applique une interpolation des couleurs pour améliorer l'image.
 
-# Questions
-- Saturation de $r$ ?
-- Pourquoi $r(\cdot)$ doit être impaire ?
-- Comment calculer $\Delta E$ ?
-- La méthode *LLL*
-- Produit tensoriel ?
-- C'est quoi $k$ ?
-- Pourquoi la pente infinie est équivalente à l'égalisation de l'histogramme ?
+### Format
+
+ace Fichier_source Fichier_cible Alpha Scaling_fonction Lab Omega Randomly{True|False} Nb_points{int}
+ace images/article/fenetre_color.png images/resultats/interpolation/fenetre_color_alpha4_ed.png 4 False False Ed True 50
