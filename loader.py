@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-def load_image(image_path, lab=True):
+def load_image(image_path, lab=False):
     try:
         image = cv2.imread(image_path)
         if image.shape == ():
@@ -15,7 +15,7 @@ def load_image(image_path, lab=True):
         print("Error while loading the image")
         raise Exception("Error while loading the image")
 
-def save_image(image, name="image", lab=True):
+def save_image(image, name="image", lab=False):
     if lab:
         image = cv2.cvtColor(image, cv2.COLOR_LAB2BGR)
     cv2.imwrite(f"{name}", image)
