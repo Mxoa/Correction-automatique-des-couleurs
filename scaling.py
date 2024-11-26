@@ -3,7 +3,7 @@ import loader as ld
 import vizualization as vz
 import tqdm
 
-def scaling(image, channel=0, mx=250, mn=10):
+def scaling(image, channel=0, mx=255, mn=0):
     """
     
     | channel : int, the channel to rescale, 0 = red, 1 = green, 2 = blue

@@ -1,4 +1,8 @@
 
+# Utilisation
+
+Remplir le fichier `argument.txt` avec des commandes de la forme décrite ci-dessous.
+
 # Description des Commandes
 
 Ces commandes permettent d'appliquer deux méthodes de traitement d'image : **`interpolation`** et **`ace`**. Chaque méthode utilise des arguments spécifiques pour ajuster ses paramètres.
@@ -23,7 +27,19 @@ Ces commandes permettent d'appliquer deux méthodes de traitement d'image : **`i
 
 Cette méthode applique une interpolation des couleurs pour améliorer l'image.
 
+## Méthode : `ace`
+
+Cette méthode applique l'algorithme ACE classique.
+
 ### Format
 
-ace Fichier_source Fichier_cible Alpha Scaling_fonction Lab Omega Randomly{True|False} Nb_points{int}
+ace           Fichier_source Fichier_cible Alpha{float} Scaling_fonction{bool} Lab{bool} Omega Randomly{True|False} Nb_points{int}
+interpolation Fichier_source Fichier_cible Alpha{float} Scaling_fonction{bool} Lab{bool} Omega Nb_levels{int}
+
+
+## Exemple de contenu de ace.py
+
+```
 ace images/article/fenetre_color.png images/resultats/interpolation/fenetre_color_alpha4_ed.png 4 False False Ed True 50
+interpolation images/article/fenetre_color.png images/resultats/interpolation/fenetre_color_alpha4_ed.png 4 False False Ed 8
+```

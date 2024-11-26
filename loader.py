@@ -21,7 +21,7 @@ def save_image(image, name="image", lab=False):
         image[:, :, 0] = np.clip(image[:, :, 0], 0, 255)
         image[:, :, 1] = np.clip(image[:, :, 1], 0, 255)
         image[:, :, 2] = np.clip(image[:, :, 2], 0, 255)
-        image = cv2.cvtColor(image, cv2.COLOR_LAB2BGR)
+        image = cv2.cvtColor(image.astype(np.uint8), cv2.COLOR_LAB2BGR)
     cv2.imwrite(f"{name}", image)
     print(f"Image saved as {name}")
 

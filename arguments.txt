@@ -1,5 +1,4 @@
 ### Méthode       Fichier_source Fichier_cible Alpha Scaling_fonction{Bool} Lab{Bool} Omega{Ed|Ed2|Manhattan}
 ### ace           ------------------------------------------------------------------------------------------- Randomly{True|False} Nb_points{int}
 ### interpolation ------------------------------------------------------------------------------------------- Nb_levels{int}
-interpolation images/article/fenetre_color.png images/resultats/interpolation/fenetre_color_alpha4_ed.png 4 False False Ed 8
-ace images/article/fenetre_color.png images/resultats/interpolation/fenetre_color_alpha4_ed.png 4 False False Ed True 50 
+ace images/test3.png images/resultats/interpolation/test4illution.png 4 False False Ed False 0
